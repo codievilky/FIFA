@@ -51,6 +51,7 @@ for runs=1:RUNS
             %err_node=create_error_node_with_probility(Error_Node,Microphone_Center_Location,Microphone_Cita,real_speaker_location(1,:));
             %生成有错误的测量数据
             measure_data_with_error=measure_data;
+
             for i=1:Node_Error_NUM
                 if err_node(1,i)~=0
                     if measure_data_with_error(err_node(1,i))==0
