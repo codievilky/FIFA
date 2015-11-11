@@ -11,15 +11,15 @@ Microphone_Distance=0.2; %手机上两个mic之间距离
 measure_alpha=0.75;     %%%切割概率
 percent             = 0.95;      %计算定位误差时，只取前90%，舍掉最大的10%
 KNN=4;  %% Basic Hamming parameter ，Hamming距离最小的KNN个点取平均
-location_error_range_abs = 0.05;         %%%%%%%%%%%%%%%%%%%%节点位置误差范围,单位m
+location_error_range_abs = 0.03;         %%%%%%%%%%%%%%%%%%%%节点位置误差范围,单位m
 angle_error_range_abs = 5;            %%%%%%%%%%%%%%%%%%%节点角度误差范围,单位角度
-Node_Error_NUM_Percent=0.1; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
+Node_Error_NUM_Percent=0.05; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
 real_statics_run=floor(RUNS*percent);
 Node_Number=100;
 Node_Error_NUM=floor(Node_Error_NUM_Percent*Node_Number);
-for_begin=1;
+for_begin=2;
 for_gap=1;
-for_end=10;%事件最大值
+for_end=2;%事件最大值
 x_label=for_begin:for_gap:for_end;
 Detection_Ratio=3;
 for runs=1:RUNS
@@ -32,7 +32,7 @@ for runs=1:RUNS
     %不同声源，错误节点相同
     for circulation_var=for_begin:for_gap:for_end
         count=count+1;
-        node_promote_weight=ones(1,Node_Number);%改进方法权值
+        node_promote_weight=zeros(1,Node_Number);%改进方法权值
         node_basic_weight=zeros(1,Node_Number);%基本方法权值
         measure_data=zeros(Node_Number,circulation_var);
         measure_data_with_error=zeros(Node_Number,circulation_var);
@@ -69,6 +69,8 @@ for runs=1:RUNS
                 ,Microphone_Distance,Microphone_Cita_with_error,Size_Grid,scale,node_promote_weight);
         end
         while all(Node_Number~=90)
+            figure(1);
+            bar(node_promote_weight);
             %将最高值认为是错误节点
             error_node=find(node_promote_weight==max(node_promote_weight));
             promote_method=[promote_method error_node(1)];
@@ -86,7 +88,7 @@ for runs=1:RUNS
                     ,measure_data_probability,Microphone_Center_Location_with_error...
                     ,Microphone_Distance,Microphone_Cita_with_error,Size_Grid,scale,node_promote_weight);    
             end
-
+            
         end
         Node_Number=100;
         %basic_method=calculate_error_node(Node_Number,node_basic_weight,propor_basic);
