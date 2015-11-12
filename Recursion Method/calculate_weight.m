@@ -2,11 +2,14 @@ function node=calculate_weight(main_node,location,cita,elocation,error_node)
 Node_Number=length(error_node);
 node=zeros(1,Node_Number);
 for i=1:Node_Number
-    distance_multi=calculate_dis(location(i,:),cita(i,:),elocation);
+    distance=calculate_dis(location(i,:),cita(i,:),elocation);
+    if distance>14||distance<0
+        disp('出错了少年');
+    end
     if error_node(i)==1
-        node(i)=exp(-0.72/(distance_multi+0.068));
+        node(i)=transfer(1,1,14,distance,1);
     elseif error_node(i)==0
-        node(i)=(1-exp(-0.72/(distance_multi+0.068)));%设置权值参数
+        node(i)=transfer(0,0,14,distance,-1);
     end
 end
 sum_weight=sum(node);

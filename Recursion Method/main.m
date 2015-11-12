@@ -1,6 +1,6 @@
 % main function
 clc;
-clear all  %清除
+%clear all  %清除
 close all; %关闭之前数据
 Size_Grid=10;  %房间大小，单位：m
 Room_Length=Size_Grid; %房间长度
@@ -13,13 +13,13 @@ percent             = 0.95;      %计算定位误差时，只取前90%，舍掉最大的10%
 KNN=4;  %% Basic Hamming parameter ，Hamming距离最小的KNN个点取平均
 location_error_range_abs = 0.03;         %%%%%%%%%%%%%%%%%%%%节点位置误差范围,单位m
 angle_error_range_abs = 5;            %%%%%%%%%%%%%%%%%%%节点角度误差范围,单位角度
-Node_Error_NUM_Percent=0.05; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
+Node_Error_NUM_Percent=0.10; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
 real_statics_run=floor(RUNS*percent);
 Node_Number=100;
 Node_Error_NUM=floor(Node_Error_NUM_Percent*Node_Number);
-for_begin=2;
+for_begin=10;
 for_gap=1;
-for_end=2;%事件最大值
+for_end=10;%事件最大值
 x_label=for_begin:for_gap:for_end;
 Detection_Ratio=3;
 for runs=1:RUNS
@@ -68,18 +68,15 @@ for runs=1:RUNS
                 ,measure_data_probability,Microphone_Center_Location_with_error...
                 ,Microphone_Distance,Microphone_Cita_with_error,Size_Grid,scale,node_promote_weight);
         end
-        while all(Node_Number~=90)
+        [sorted_weight,sequence]=sort(node_promote_weight);
+        while all(numel(promote_method)~=5)
             figure(1);
             bar(node_promote_weight);
             %将最高值认为是错误节点
-            error_node=find(node_promote_weight==max(node_promote_weight));
+            error_node=sequence(1);
             promote_method=[promote_method error_node(1)];
             %删除错误节点的所有数据
-            Node_Number=Node_Number-1;
-            measure_data_with_error(error_node(1),:)=[];
-            Microphone_Center_Location_with_error(error_node(1),:)=[];
-            measure_data_probability(error_node(1))=[];
-            Microphone_Cita_with_error(error_node(1))=[];
+            measure_data_with_error(error_node(1),:)=~measure_data_with_error(error_node(1),:);
             %改进方法权值
             node_promote_weight=zeros(1,Node_Number);
             %通过测量数据求得三次的权值
@@ -88,7 +85,7 @@ for runs=1:RUNS
                     ,measure_data_probability,Microphone_Center_Location_with_error...
                     ,Microphone_Distance,Microphone_Cita_with_error,Size_Grid,scale,node_promote_weight);    
             end
-            
+            [sorted_weight,sequence]=sort(node_promote_weight);            
         end
         Node_Number=100;
         %basic_method=calculate_error_node(Node_Number,node_basic_weight,propor_basic);
@@ -116,8 +113,8 @@ save sequence_data.mat RUNS x_label FPR_Advance FNR_Advance  ...
     
 %clear all;
 load sequence_data.mat
-
-figure('Position',[1 1 1200 900])
+figure;
+%figure('Position',[1 1 1200 900])
 plot(x_label, FPR_Advance_mean, 'rs-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 hold on;
 %plot(x_label, FPR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
@@ -127,8 +124,8 @@ legend('\fontsize{12}\bf Advance');
 xlabel('\fontsize{12}\bf Sequence Number');
 ylabel('\fontsize{12}\bf FPR');
 title('\fontsize{12}\bf  Sequence Number vs. FPR');
-
-figure('Position',[1 1 1200 900])
+figure;
+%figure('Position',[1 1 1200 900])
 plot(x_label, FNR_Advance_mean, 'rs-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 hold on;
 %plot(x_label, FNR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
