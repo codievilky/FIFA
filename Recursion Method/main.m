@@ -5,7 +5,7 @@ close all; %关闭之前数据
 Size_Grid=10;  %房间大小，单位：m
 Room_Length=Size_Grid; %房间长度
 Room_Width=Size_Grid;  %房间宽度
-RUNS = 10; %%仿真次数
+RUNS = 20; %%仿真次数
 scale=5;    %       可变参数，GM算法的空间离散化步长
 Microphone_Distance=0.2; %手机上两个mic之间距离
 measure_alpha=0.75;     %%%切割概率
@@ -17,11 +17,13 @@ Node_Error_NUM_Percent=0.10; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
 real_statics_run=floor(RUNS*percent);
 Node_Number=100;
 Node_Error_NUM=floor(Node_Error_NUM_Percent*Node_Number);
-for_begin=10;
+for_begin=1;
 for_gap=1;
 for_end=10;%事件最大值
 x_label=for_begin:for_gap:for_end;
 Detection_Ratio=3;
+FPR_Advance=zeros(RUNS,for_end-for_begin+1);
+FNR_Advance=zeros(RUNS,for_end-for_begin+1);
 for runs=1:RUNS
     count=0;
     runs
@@ -36,9 +38,11 @@ for runs=1:RUNS
         node_basic_weight=zeros(1,Node_Number);%基本方法权值
         measure_data=zeros(Node_Number,circulation_var);
         measure_data_with_error=zeros(Node_Number,circulation_var);
+        real_speaker_location=zeros(circulation_var,2);
+        %获得出所有的测量数据----------------------
         for sequence=1:circulation_var
-            real_speaker_location=(Size_Grid*abs((rand(1,2))));
-            measure_data(:,sequence)=get_sequence(Node_Number,Microphone_Center_Location,Microphone_Cita,real_speaker_location);
+            real_speaker_location(sequence,:)=(Size_Grid*abs((rand(1,2))));
+            measure_data(:,sequence)=get_sequence(Node_Number,Microphone_Center_Location,Microphone_Cita,real_speaker_location(sequence,:));
             %切割概率
             measure_data_probability=ones(Node_Number,1);
             for i=1:Node_Number
@@ -55,12 +59,14 @@ for runs=1:RUNS
                 if err_node(1,i)~=0
                     if measure_data_with_error(err_node(1,i),sequence)==0
                         measure_data_with_error(err_node(1,i),sequence)=1;
-                        
+                    else    
                         measure_data_with_error(err_node(1,i),sequence)=0;
                     end
                 end
             end
         end
+        %获得三次测量数据------------------------end
+        %Recursion Method-------------------------
         promote_method=[];            
         %通过测量数据求得三次的权值
         for sequence=1:circulation_var
@@ -68,8 +74,8 @@ for runs=1:RUNS
                 ,measure_data_probability,Microphone_Center_Location_with_error...
                 ,Microphone_Distance,Microphone_Cita_with_error,Size_Grid,scale,node_promote_weight);
         end
-        [sorted_weight,sequence]=sort(node_promote_weight);
-        while all(numel(promote_method)~=5)
+        [sorted_weight,sequence]=sort(node_promote_weight,'descend');
+        while all(numel(promote_method)~=10)
             figure(1);
             bar(node_promote_weight);
             %将最高值认为是错误节点
@@ -85,9 +91,9 @@ for runs=1:RUNS
                     ,measure_data_probability,Microphone_Center_Location_with_error...
                     ,Microphone_Distance,Microphone_Cita_with_error,Size_Grid,scale,node_promote_weight);    
             end
-            [sorted_weight,sequence]=sort(node_promote_weight);            
+            [sorted_weight,sequence]=sort(node_promote_weight,'descend');            
         end
-        Node_Number=100;
+        %Recursion Method-------------------------end
         %basic_method=calculate_error_node(Node_Number,node_basic_weight,propor_basic);
         FPR_Advance_tmp(count)=xubao(Error_Node,promote_method);
         FNR_Advance_tmp(count)=wubao(Error_Node,promote_method);
