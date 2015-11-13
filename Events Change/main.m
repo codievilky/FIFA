@@ -13,7 +13,7 @@ percent             = 0.95;      %计算定位误差时，只取前90%，舍掉最大的10%
 KNN=4;  %% Basic Hamming parameter ，Hamming距离最小的KNN个点取平均
 location_error_range_abs = 0.05;         %%%%%%%%%%%%%%%%%%%%节点位置误差范围,单位m
 angle_error_range_abs = 5;            %%%%%%%%%%%%%%%%%%%节点角度误差范围,单位角度
-Node_Error_NUM_Percent=0.4; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
+Node_Error_NUM_Percent=0.1; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
 real_statics_run=floor(RUNS*percent);
 Node_Number=100;
 Node_Error_NUM=floor(Node_Error_NUM_Percent*Node_Number);
@@ -82,6 +82,8 @@ for runs=1:RUNS
                 ,Microphone_Cita_with_error,estimated_location,faulty_node);
             node_basic_weight=node_basic_weight+faulty_node;
         end
+        figure;
+        bar(node_basic_weight);
         %对于计算错误节点中的proportion，从2一直试验到4，寻找效果最好的proportion
         miniest=9999;
         proportion=1;
