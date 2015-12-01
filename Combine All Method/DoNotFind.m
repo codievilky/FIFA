@@ -1,8 +1,8 @@
-function result=False_Positive_Rate(main,other)
-num=0;
+function num=DoNotFind(main,other)
 flag=1;
-for i=other(1:end)
-    for j=main(1:end)
+num=0;
+for i=main(1:end)
+    for j=other(1:end)
         if i==j
             flag=0;
         end
@@ -13,4 +13,3 @@ for i=other(1:end)
         flag=1;
     end
 end
-result=num;

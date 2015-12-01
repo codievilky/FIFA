@@ -1,27 +1,34 @@
-function Error_Node=Recursion_Method(circulation,Number,measure,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale)
-Error_Node=[];
-weight=zeros(1,Number); 
-%通过测量数据求得三次的权值
+function Error_Node=Recursion_Method(measure,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale)
+[Number,circulation]=size(measure);
+Error_Node=zeros(1,Number);
+weight=zeros(1,Number);
 for sequence=1:circulation
-    weight=measure_to_weight(Number,measure(:,sequence),probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale,weight);
+    weight=measure_to_weight(measure(:,sequence),probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale,weight);
+    if weight==zeros(1,Number);
+        break;
+    end
 end
-[~,sequence]=sort(weight,'descend');
-while all(numel(Error_Node)~=10)
-%     figure(1);
-%     bar(weight);
-    %将最高值认为是错误节点
-    error_node=sequence(1);
-    Error_Node=[Error_Node error_node(1)];
-    %删除错误节点的所有数据
-    measure(error_node(1),:)=~measure(error_node(1),:);
-    %改进方法权值
+Error_Count=0;
+%while numel(Error_Node)~=10
+while weight~=zeros(1,Number);
+    Error_Count=Error_Count+1;
+    [~,sequence]=sort(weight,'descend');%降序排序
+    figure(1);
+    bar(weight);
+    close all;
+    Error=sequence(1);%将最高值认为是错误节点    
+    Error_Node(Error_Count)=Error;
+    measure(Error,:)=~measure(Error,:);%修改错误节点的所有数据
     weight=zeros(1,Number);
-    %通过测量数据求得三次的权值
     for sequence=1:circulation
-        weight=measure_to_weight(Number,measure(:,sequence)...
+        weight=measure_to_weight(measure(:,sequence)...
             ,probability,Measure_Location...
             ,Microphone_Distance,Measure_Cita,Size_Grid,scale,weight);
+        if weight==zeros(1,Number);
+            break;
+        end
     end
-    [~,sequence]=sort(weight,'descend');
 end
+
+Error_Node=CutEnd(Error_Node,Error_Count);
 %Recursion Method-------------------------end

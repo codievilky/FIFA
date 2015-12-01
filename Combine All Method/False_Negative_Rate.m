@@ -13,4 +13,4 @@ for i=main(1:end)
         flag=1;
     end
 end
-result=num/length(main);
+result=num;
