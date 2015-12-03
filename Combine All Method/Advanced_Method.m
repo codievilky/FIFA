@@ -1,6 +1,6 @@
 function Error_Node=Advanced_Method(circulation,Real_Error_Node,Number,measure,probability,Location,Microphone_Distance,Cita,Size_Grid,scale)
-weight=ones(Number,1);
-faulty_node=ones(Number,1);
+weight=zeros(Number,1);
+faulty_node=zeros(Number,1);
 for sequence=1:circulation
     estimated_location = GM_Probility_Cutting(Number,measure(:,sequence),probability,Location,Microphone_Distance,Cita,Size_Grid,scale);
     estimated_data=get_sequence(Number,Location,Cita,estimated_location);
@@ -10,12 +10,15 @@ for sequence=1:circulation
             faulty_node(i)=1;
         end
     end
+    %计算每个估计出来的错误节点和声源的位置
+    %因为越远越不容易出错，所以权值和距离成正相关
+    %提升的方法使用距离进行加权
+    weight=calculate_weight(weight,Location,Cita,estimated_location,faulty_node);
 end
-%计算每个估计出来的错误节点和声源的位置
-%因为越远越不容易出错，所以权值和距离成正相关
-%distance_multi=calculate_dis(Microphone_Center_Location_with_error(i,:),Microphone_Cita_with_error(i,:),estimated_location);
-%提升的方法使用距离进行加权
-weight=calculate_weight(weight,Location,Cita,estimated_location,faulty_node);
+
+% figure;
+% bar(weight);
+% close all;
 %对于计算错误节点中的proportion，从2一直试验到4，寻找效果最好的proportion
 miniest=9999;
 proportion=2;
