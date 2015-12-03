@@ -50,8 +50,8 @@ for runs=1:RUNS
         real_data=zeros(Node_Number,circulation);
         measure_data=zeros(Node_Number,circulation);
         real_speaker_location=zeros(circulation,2);
-        Node_Error_NUM=floor(Node_Error_NUM_Percent*Node_Number/100);%产生错误节点个数
-        Error_Node=sort(Random_Node_Sequence(1:Node_Error_NUM));%产生错误节点
+        Node_Error_NUM=floor(Node_Error_NUM_Percent*Node_Number/100);
+        Error_Node=sort(Random_Node_Sequence(1:Node_Error_NUM));
 %         if mod(circulation,5)==0
 %             sequence=circulation
 %         end
@@ -97,7 +97,7 @@ for runs=1:RUNS
         %Bound_ErrorNode=Bound_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
         %Bound_ErrorNode=zeros(1,10);
         
-        Bound_ErrorNode=OnlyOne_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
+        Bound_ErrorNode=Promoted_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
         
         [FPR_Basic_tmp((Node_Error_NUM_Percent-for_begin)/for_gap+1),FNR_Basic_tmp((Node_Error_NUM_Percent-for_begin)/for_gap+1)]=False_Rate(Error_Node,Basic_ErrorNode);
         [FPR_Recursion_tmp((Node_Error_NUM_Percent-for_begin)/for_gap+1),FNR_Recursion_tmp((Node_Error_NUM_Percent-for_begin)/for_gap+1)]=False_Rate(Error_Node,Recursion_ErrorNode);

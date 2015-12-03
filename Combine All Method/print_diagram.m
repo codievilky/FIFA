@@ -7,9 +7,9 @@ plot(x_label, FPR_Advanced_mean, 'rs-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 hold on;
 plot(x_label, FPR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
 plot(x_label, FPR_Recursion_mean, 'b+-', 'LineWidth', 2, 'MarkerFaceColor', 'b');
-%plot(x_label, FPR_Bound_mean, 'yo-', 'LineWidth', 2, 'MarkerFaceColor', 'b');
+plot(x_label, FPR_Bound_mean, 'yo-', 'LineWidth', 2, 'MarkerFaceColor', 'b');
 hold off
-legend('\fontsize{12}\bf Advanced','\fontsize{12}\bf Basic','\fontsize{12}\bf Recursion');%,'\fontsize{12}\bf Bound');
+legend('\fontsize{12}\bf Advanced','\fontsize{12}\bf Basic','\fontsize{12}\bf Recursion','\fontsize{12}\bf Bound');
 
 xlabel('\fontsize{12}\bf Sequence Number');
 ylabel('\fontsize{12}\bf False Positive Rate');
