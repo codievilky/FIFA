@@ -3,27 +3,24 @@ close all;
 load print_data.mat
 figure;
 %figure('Position',[1 1 1200 900])
-plot(x_label, FPR_Advanced_mean, 'rs-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
-hold on;
 plot(x_label, FPR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
-plot(x_label, FPR_Recursion_mean, 'b+-', 'LineWidth', 2, 'MarkerFaceColor', 'b');
-plot(x_label, FPR_Bound_mean, 'yo-', 'LineWidth', 2, 'MarkerFaceColor', 'b');
+hold on;
+plot(x_label, FPR_OnlyOne_mean, 'ro-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 hold off
-legend('\fontsize{12}\bf Advanced','\fontsize{12}\bf Basic','\fontsize{12}\bf Recursion','\fontsize{12}\bf Bound');
+axis([min(x_label) max(x_label) 0 0.5]); 
+legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
 
 xlabel('\fontsize{12}\bf Sequence Number');
 ylabel('\fontsize{12}\bf False Positive Rate');
 title('\fontsize{12}\bf  Sequence Number vs. FPR');
 figure;
 %figure('Position',[1 1 1200 900])
-plot(x_label, FNR_Advanced_mean, 'rs-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
-hold on;
 plot(x_label, FNR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
-plot(x_label, FNR_Recursion_mean, 'b+-', 'LineWidth', 2, 'MarkerFaceColor', 'b')
-plot(x_label, FNR_Bound_mean, 'y*-', 'LineWidth', 2, 'MarkerFaceColor', 'b')
+hold on;
+plot(x_label, FNR_OnlyOne_mean, 'ro-', 'LineWidth', 2, 'MarkerFaceColor', 'r')
 hold off
-legend('\fontsize{12}\bf Advanced','\fontsize{12}\bf Basic','\fontsize{12}\bf Recursion','\fontsize{12}\bf Bound');
-
+axis([min(x_label) max(x_label) 0 0.5]); 
+legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
 xlabel('\fontsize{12}\bf Sequence Number');
 ylabel('\fontsize{12}\bf False Negative Rate');
 title('\fontsize{12}\bf  Sequence Number vs. FNR');

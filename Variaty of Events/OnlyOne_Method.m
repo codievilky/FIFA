@@ -13,6 +13,8 @@ for sequence=1:circulation
     end
 end
 Error_Count=1;
+bar(weight);
+close all;
 for i=1:Number
     if weight(i)>1
         Error_Node(Error_Count)=i;
