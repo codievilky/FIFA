@@ -2,7 +2,7 @@
 clc;
 %clear all  %清除
 close all; %关闭之前数据
-RUNS = 10; %%仿真次数
+RUNS = 50; %%仿真次数
 Node_Error_NUM_Percent=0.10; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
 for_begin=10;%扫描次数最小值
 for_gap=5;
@@ -45,6 +45,7 @@ for runs=1:RUNS
     FNR_Recursion_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FPR_Recursion_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FNR_Bound_tmp=zeros((for_end-for_begin)/for_gap+1,1);
+    circulation=3;
     for Node_Error_NUM_Percent=for_begin:for_gap:for_end
         node_basic_weight=zeros(1,Node_Number);%基本方法权值
         real_data=zeros(Node_Number,circulation);
