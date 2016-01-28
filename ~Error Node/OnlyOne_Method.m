@@ -1,10 +1,10 @@
-function Error_Node=OnlyOne_Method(measure,probability,Location,Microphone_Distance,Cita,Size_Grid,scale)
+function Error_Node=OnlyOne_Method(measure,probability,Location,Microphone_Distance,Cita,Size_Grid,TDOA,scale)
 [Number,circulation]=size(measure);
 Error_Node=zeros(1,Number);
 weight=zeros(1,Number);
 for sequence=1:circulation
     estimated_location = GM_Probility_Cutting(Number,measure(:,sequence),probability,Location,Microphone_Distance,Cita,Size_Grid,scale);
-    estimated_data=get_sequence(Number,Location,Cita,estimated_location);
+    estimated_data=get_sequence(Number,Location,Cita,estimated_location,TDOA);
     for i=1:Number
         %当测量值不等于有定位结果分析的'真实值'时，实验中认为说明该节点出错
         if measure(i,sequence)~=estimated_data(i)
@@ -13,7 +13,6 @@ for sequence=1:circulation
     end
 end
 Error_Count=1;
-sort(weight)
 bar(weight);
 close all;
 for i=1:Number

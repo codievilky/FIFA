@@ -13,7 +13,6 @@ for sequence=1:circulation
     end
 end
 Error_Count=1;
-sort(weight)
 bar(weight);
 close all;
 for i=1:Number

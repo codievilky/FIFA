@@ -1,4 +1,4 @@
-function Error_Node=OnlyOne_Method(measure,probability,Location,Microphone_Distance,Cita,Size_Grid,scale)
+function Error_Node=Promoted_Method(measure,probability,Location,Microphone_Distance,Cita,Size_Grid,scale)
 [Number,circulation]=size(measure);
 Error_Node=zeros(1,Number);
 weight=zeros(1,Number);
@@ -12,19 +12,12 @@ for sequence=1:circulation
         end
     end
 end
-Error_Count=1;
-sort(weight)
+weight=weight/circulation;
+%[~,sequence]=sort(weight,'descend');%降序排序
 bar(weight);
-close all;
-for i=1:Number
-    if weight(i)>1
-        Error_Node(Error_Count)=i;
-        Error_Count=Error_Count+1;
-    end
-end
-Error_Node=CutEnd(Error_Node,Error_Count-1);
+%y-y0=tan(cita-pi/2)(x-x0)
+error=ones(1,Number);
 % for i=1:Number
-% %y-y0=tan(cita-pi/2)(x-x0)
 % %计算一条直线切一个长方形后，这条线的在长方形中的长度
 %     k=tan(Cita(i)-pi/2);
 %     point=zeros(2);
@@ -60,3 +53,6 @@ Error_Node=CutEnd(Error_Node,Error_Count-1);
 %     unique(point,'rows');
 %     error(i)=norm(point(1)-point(2))/(Size_Grid^2);
 % end
+figure;
+bar(error);
+close all;

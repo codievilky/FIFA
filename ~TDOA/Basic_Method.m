@@ -12,6 +12,6 @@ for sequence=1:circulation
         end
     end
 end
-x=0;
+x=0.03;
 proportion=Node_Alpha+rand*x*2-x;
 Error_Node=calculate_error_node(Number,weight,proportion);

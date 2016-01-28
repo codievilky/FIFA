@@ -2,11 +2,11 @@
 clc;
 %clear all  %清除
 close all; %关闭之前数据
-RUNS = 3; %%仿真次数
+RUNS = 50; %%仿真次数
 Node_Error_NUM_Percent=0.10; %节点量测信息出错的百分比
-for_begin=1000;%扫描次数最小值
-for_gap=1000;
-for_end=3000;%扫描次数最大值
+for_begin=0;
+for_gap=1;
+for_end=10;
 
 Size_Grid=10;  %房间大小，单位：m
 Room_Length=Size_Grid; %房间长度
@@ -18,10 +18,11 @@ percent             = 0.95;      %计算定位误差时，只取前90%，舍掉最大的10%
 KNN=4;  %% Basic Hamming parameter ，Hamming距离最小的KNN个点取平均
 location_error_range_abs = 0.03;         %节点位置误差范围,单位m
 angle_error_range_abs = 5;            %节点角度误差范围,单位角度
+TDOA_error_range_abs=2;
 real_statics_run=floor(RUNS*percent);
 Node_Number=100;
 
-
+circulation=5;
 x_label=for_begin:for_gap:for_end;
 Detection_Ratio=3;
 FPR_Basic=zeros(RUNS,(for_end-for_begin)/for_gap+1);
@@ -37,7 +38,8 @@ for runs=1:RUNS
     FNR_Basic_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FPR_OnlyOne_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FNR_OnlyOne_tmp=zeros((for_end-for_begin)/for_gap+1,1);
-    for circulation=for_begin:for_gap:for_end
+    for changething=for_begin:for_gap:for_end
+        TDOA_error_range_abs=changething;
         node_basic_weight=zeros(1,Node_Number);%基本方法权值
         real_data=zeros(Node_Number,circulation);
         measure_data=zeros(Node_Number,circulation);
@@ -50,7 +52,7 @@ for runs=1:RUNS
         %获得出所有的测量数据----------------------
         for sequence=1:circulation
             real_speaker_location(sequence,:)=(Size_Grid*abs((rand(1,2))));
-            real_data(:,sequence)=get_sequence(Node_Number,Microphone_Center_Location,Microphone_Cita,real_speaker_location(sequence,:));
+            real_data(:,sequence)=get_sequence(Node_Number,Microphone_Center_Location,Microphone_Cita,real_speaker_location(sequence,:),TDOA_error_range_abs);
             %切割概率
             probability=ones(Node_Number,1);
             for i=1:Node_Number
@@ -75,14 +77,12 @@ for runs=1:RUNS
         end
         %获得出所有的测量数据------------------------end
         %基本方法
-        Basic_ErrorNode=Basic_Method(Node_Error_NUM_Percent,measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
-        
+        Basic_ErrorNode=Basic_Method(Node_Error_NUM_Percent,measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,TDOA_error_range_abs,scale);
         
         %只计算一次错误方法
-        OnlyOne_ErrorNode=OnlyOne_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
-        
-        [FPR_Basic_tmp((circulation-for_begin)/for_gap+1),FNR_Basic_tmp((circulation-for_begin)/for_gap+1)]=False_Rate(Error_Node,Basic_ErrorNode);
-        [FPR_OnlyOne_tmp((circulation-for_begin)/for_gap+1),FNR_OnlyOne_tmp((circulation-for_begin)/for_gap+1)]=False_Rate(Error_Node,OnlyOne_ErrorNode);
+        OnlyOne_ErrorNode=OnlyOne_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,TDOA_error_range_abs,scale);
+        [FPR_Basic_tmp(round((changething-for_begin)/for_gap+1)),FNR_Basic_tmp(round((changething-for_begin)/for_gap+1))]=False_Rate(Error_Node,Basic_ErrorNode);
+        [FPR_OnlyOne_tmp(round((changething-for_begin)/for_gap+1)),FNR_OnlyOne_tmp(round((changething-for_begin)/for_gap+1))]=False_Rate(Error_Node,OnlyOne_ErrorNode);
         
         
     end
