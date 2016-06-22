@@ -6,7 +6,7 @@ RUNS = 50; %%仿真次数
 Node_Error_NUM_Percent=0.10; %%%%%%%%%%%%%%%%%%%节点量测信息出错的百分比
 for_begin=10;%扫描次数最小值
 for_gap=5;
-for_end=30;%扫描次数最大值
+for_end=40;%扫描次数最大值
 
 Size_Grid=10;  %房间大小，单位：m
 Room_Length=Size_Grid; %房间长度

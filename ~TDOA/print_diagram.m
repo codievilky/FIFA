@@ -10,9 +10,9 @@ hold off
 axis([min(x_label) max(x_label) 0 0.5]); 
 legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
 
-xlabel('\fontsize{12}\bf Sequence Number');
+xlabel('\fontsize{12}\bf Error Node Number');
 ylabel('\fontsize{12}\bf False Positive Rate');
-title('\fontsize{12}\bf  Sequence Number vs. FPR');
+title('\fontsize{12}\bf  Error Node Number vs. FPR');
 figure;
 %figure('Position',[1 1 1200 900])
 plot(x_label, FNR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
@@ -21,6 +21,6 @@ plot(x_label, FNR_OnlyOne_mean, 'ro-', 'LineWidth', 2, 'MarkerFaceColor', 'r')
 hold off
 axis([min(x_label) max(x_label) 0 0.5]); 
 legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
-xlabel('\fontsize{12}\bf Sequence Number');
+xlabel('\fontsize{12}\bf Error Node Number');
 ylabel('\fontsize{12}\bf False Negative Rate');
-title('\fontsize{12}\bf  Sequence Number vs. FNR');
+title('\fontsize{12}\bf  Error Node Number vs. FNR');
