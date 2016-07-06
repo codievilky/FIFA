@@ -31,7 +31,6 @@ FPR_OnlyOne=zeros(RUNS,(for_end-for_begin)/for_gap+1);
 FNR_OnlyOne=zeros(RUNS,(for_end-for_begin)/for_gap+1);
 for runs=1:RUNS
     runs
-    
     FPR_Basic_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FNR_Basic_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FPR_OnlyOne_tmp=zeros((for_end-for_begin)/for_gap+1,1);
