@@ -1,0 +1,14 @@
+@book{Landau,
+title = "Fluid Mechanics",
+author = "L. D. Landau and E. M. Lifschitz",
+publisher = "Pergamon Press, Oxford",
+year = "1987"
+}
+
+@Article{Cattaneo,
+author = {F. Cattaneo, T. Emonet, and N. Weiss},
+journal = "Astrophys. J.",
+year = {2003},
+volume = {588},
+pages = {1183},
+}
