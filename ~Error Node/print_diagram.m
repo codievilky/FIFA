@@ -7,6 +7,7 @@ plot(x_label, FPR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
 hold on;
 plot(x_label, FPR_OnlyOne_mean, 'ro-', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 hold off
+set(gca,'xtick',x_label);
 axis([min(x_label) max(x_label) 0 0.5]); 
 legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
 
@@ -19,6 +20,7 @@ plot(x_label, FNR_Basic_mean, 'g^-', 'LineWidth', 2, 'MarkerFaceColor', 'g');
 hold on;
 plot(x_label, FNR_OnlyOne_mean, 'ro-', 'LineWidth', 2, 'MarkerFaceColor', 'r')
 hold off
+set(gca,'xtick',x_label);
 axis([min(x_label) max(x_label) 0 0.5]); 
 legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
 xlabel('\fontsize{12}\bf Error Node Rate');

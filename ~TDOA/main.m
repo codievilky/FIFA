@@ -2,11 +2,11 @@
 clc;
 %clear all  %清除
 close all; %关闭之前数据
-RUNS = 50; %%仿真次数
+RUNS = 10; %%仿真次数
 Node_Error_NUM_Percent=0.10; %节点量测信息出错的百分比
-for_begin=1;
+for_begin=0;
 for_gap=1;
-for_end=5;
+for_end=15;
 
 Size_Grid=10;  %房间大小，单位：m
 Room_Length=Size_Grid; %房间长度
@@ -59,7 +59,7 @@ for runs=1:RUNS
                 probability(i)=measure_alpha;
             end
             %加入节点的位置与指向误差, 准备仿真数据
-            Measure_Cita=Microphone_Cita+angle_error_range_abs*2*(-0.5+rand( size(Microphone_Cita)));
+            Measure_Cita=Microphone_Cita+angle_error_range_abs*2*(-0.5+rand(size(Microphone_Cita)));
             Measure_Location=Microphone_Center_Location+location_error_range_abs*2*(-0.5+rand(size(Microphone_Center_Location)));
             %生成错误节点
             err_node=Error_Node;
@@ -77,10 +77,11 @@ for runs=1:RUNS
         end
         %获得出所有的测量数据------------------------end
         %基本方法
-        Basic_ErrorNode=Basic_Method(Node_Error_NUM_Percent,measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,TDOA_error_range_abs,scale);
+        weight = Get_Weight(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
+        Basic_ErrorNode=Basic_Method(Node_Error_NUM_Percent,weight);
         
         %只计算一次错误方法
-        OnlyOne_ErrorNode=OnlyOne_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,TDOA_error_range_abs,scale);
+        OnlyOne_ErrorNode=OnlyOne_Method(weight);
         [FPR_Basic_tmp(round((changething-for_begin)/for_gap+1)),FNR_Basic_tmp(round((changething-for_begin)/for_gap+1))]=False_Rate(Error_Node,Basic_ErrorNode);
         [FPR_OnlyOne_tmp(round((changething-for_begin)/for_gap+1)),FNR_OnlyOne_tmp(round((changething-for_begin)/for_gap+1))]=False_Rate(Error_Node,OnlyOne_ErrorNode);
         
