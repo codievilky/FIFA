@@ -2,7 +2,7 @@
 clc;
 %clear all  %清除
 close all; %关闭之前数据
-RUNS = 50; %%仿真次数
+RUNS = 10; %%仿真次数
 Node_Error_NUM_Percent=0.10; %节点量测信息出错的百分比
 for_begin=5;
 for_gap=5;
@@ -53,7 +53,7 @@ for runs=1:RUNS
         %获得出所有的测量数据----------------------
         for sequence=1:circulation
             real_speaker_location(sequence,:)=(Size_Grid*abs((rand(1,2))));
-            real_data(:,sequence)=get_sequence(Node_Number,Microphone_Center_Location,Microphone_Cita,real_speaker_location(sequence,:));
+            real_data(:,sequence)=get_sequence(Node_Number,Microphone_Center_Location,Microphone_Cita,real_speaker_location(sequence,:),TODA_error_range_abs);
             %切割概率
             probability=ones(Node_Number,1);
             for i=1:Node_Number
@@ -78,10 +78,11 @@ for runs=1:RUNS
         end
         %获得出所有的测量数据------------------------end
         %基本方法
-        Basic_ErrorNode=Basic_Method(Node_Error_NUM_Percent,measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
-        %只计算一次错误方法
-        OnlyOne_ErrorNode=OnlyOne_Method(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
+        weight = Get_Weight(measure_data,probability,Measure_Location,Microphone_Distance,Measure_Cita,Size_Grid,scale);
+        Basic_ErrorNode=Basic_Method(Node_Error_NUM_Percent,weight);
         
+        %只计算一次错误方法
+        OnlyOne_ErrorNode=OnlyOne_Method(weight);         
         [FPR_Basic_tmp((changething-for_begin)/for_gap+1),FNR_Basic_tmp((changething-for_begin)/for_gap+1)]=False_Rate(Error_Node,Basic_ErrorNode);
         [FPR_OnlyOne_tmp((changething-for_begin)/for_gap+1),FNR_OnlyOne_tmp((changething-for_begin)/for_gap+1)]=False_Rate(Error_Node,OnlyOne_ErrorNode);
         

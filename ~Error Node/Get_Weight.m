@@ -14,7 +14,6 @@ for sequence=1:circulation
     end
 end
 bar(weight);
-hist(weight,0:1:10);
 close all;
 end
 

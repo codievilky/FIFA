@@ -3,8 +3,8 @@ clc;
 %clear all  %清除
 close all; %关闭之前数据
 RUNS = 10; %%仿真次数
-Node_Error_NUM_Percent=0.10; %节点量测信息出错的百分比
-for_begin=0;
+Node_Error_NUM_Percent=0.20; %节点量测信息出错的百分比
+for_begin=10;
 for_gap=1;
 for_end=15;
 
