@@ -29,12 +29,16 @@ FPR_Basic=zeros(RUNS,(for_end-for_begin)/for_gap+1);
 FNR_Basic=zeros(RUNS,(for_end-for_begin)/for_gap+1);
 FPR_OnlyOne=zeros(RUNS,(for_end-for_begin)/for_gap+1);
 FNR_OnlyOne=zeros(RUNS,(for_end-for_begin)/for_gap+1);
+FPR_HistGet=zeros(RUNS,(for_end-for_begin)/for_gap+1);
+FNR_HistGet=zeros(RUNS,(for_end-for_begin)/for_gap+1);
 for runs=1:RUNS
-    runs
+    disp(['Run Times:' num2str(runs)]);
     FPR_Basic_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FNR_Basic_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FPR_OnlyOne_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     FNR_OnlyOne_tmp=zeros((for_end-for_begin)/for_gap+1,1);
+    FPR_HistGet_tmp=zeros((for_end-for_begin)/for_gap+1,1);
+    FNR_HistGet_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     for changething=for_begin:for_gap:for_end
         Node_Error_NUM_Percent=changething/100;
         Random_Node_Sequence=randperm(Node_Number);
@@ -83,9 +87,11 @@ for runs=1:RUNS
         
         %只计算一次错误方法
         OnlyOne_ErrorNode=OnlyOne_Method(weight);         
+        HistGet_ErrorNode = HistGet_Method(circulation,weight);
+        
         [FPR_Basic_tmp((changething-for_begin)/for_gap+1),FNR_Basic_tmp((changething-for_begin)/for_gap+1)]=False_Rate(Error_Node,Basic_ErrorNode);
         [FPR_OnlyOne_tmp((changething-for_begin)/for_gap+1),FNR_OnlyOne_tmp((changething-for_begin)/for_gap+1)]=False_Rate(Error_Node,OnlyOne_ErrorNode);
-        
+        [FPR_HistGet_tmp((changething-for_begin)/for_gap+1),FNR_HistGet_tmp((changething-for_begin)/for_gap+1)]=False_Rate(Error_Node,HistGet_ErrorNode);
         
     end
     
@@ -94,6 +100,8 @@ for runs=1:RUNS
     FNR_Basic(runs,:)=FNR_Basic_tmp;
     FPR_OnlyOne(runs,:)=FPR_OnlyOne_tmp;
     FNR_OnlyOne(runs,:)=FNR_OnlyOne_tmp;
+    FPR_HistGet(runs,:)=FPR_HistGet_tmp;
+    FNR_HistGet(runs,:)=FNR_HistGet_tmp;
 end
 
 FPR_Basic_mean = mean(FPR_Basic(1:RUNS,:));

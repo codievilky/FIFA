@@ -1,7 +1,9 @@
 function [ Error_Node ] = HistGet_Method( circulation, weight )
+[Number,~] = size(weight);
 plot(hist(weight,1:1:circulation));
+close all;
 n = hist(weight,1:1:circulation);
-bound = get_LSMin(n);
+bound = get_LSMin(n) ;
 Error_Count = 0;
 for i = 1:Number
     if weight(i) >= bound

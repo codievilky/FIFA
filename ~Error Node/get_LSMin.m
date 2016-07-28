@@ -1,7 +1,6 @@
 function [ bound ] = get_LSMin( hist_array )
 %get the longest succession minimum bound
 circulation = length(hist_array);
-hist_array;
 this = [ 0 0 0 ];
 number = [ max(hist_array)+1 0 0 ];
 i = 1;
