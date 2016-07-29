@@ -25,7 +25,6 @@ hold off
 set(gca,'xtick',x_label);
 axis([min(x_label) max(x_label) 0 0.5]); 
 legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne','\fontsize{12}\bf HistGet');
-legend('\fontsize{12}\bf Basic','\fontsize{12}\bf OnlyOne');
 xlabel('\fontsize{12}\bf Error Node Rate');
 ylabel('\fontsize{12}\bf False Negative Rate');
 title('\fontsize{12}\bf  Error Node Rate vs. FNR');

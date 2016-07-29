@@ -41,6 +41,10 @@ for runs=1:RUNS
     FNR_HistGet_tmp=zeros((for_end-for_begin)/for_gap+1,1);
     for changething=for_begin:for_gap:for_end
         TDOA_error_range_abs=changething;
+        Random_Node_Sequence=randperm(Node_Number);
+        Microphone_Cita=fix(-90+180*(rand(Node_Number,1))); %%朝向 [-90  90]
+        Microphone_Center_Location=fix(Size_Grid*abs((rand(Node_Number,2)))); % 中心 位置
+        
         node_basic_weight=zeros(1,Node_Number);%基本方法权值
         real_data=zeros(Node_Number,circulation);
         measure_data=zeros(Node_Number,circulation);
